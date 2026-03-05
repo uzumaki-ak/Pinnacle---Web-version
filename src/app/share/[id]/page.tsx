@@ -1,21 +1,29 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
 
-export default function SharePage({ params }: { params: { id: string } }) {
+export default function SharePage() {
+  const params = useParams();
+  const idParam = params?.id;
+  const shareId = Array.isArray(idParam) ? idParam[0] : idParam;
   const [item, setItem] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchSharedItem();
-  }, []);
+    if (shareId) {
+      fetchSharedItem(shareId);
+    }
+  }, [shareId]);
 
-  const fetchSharedItem = async () => {
+  const fetchSharedItem = async (id: string) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/share/${params.id}`);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/share/${id}`,
+      );
       const data = await response.json();
       setItem(data);
     } catch (error) {
