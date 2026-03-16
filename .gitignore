@@ -36,3 +36,4 @@ yarn-error.log*
 
 # Development
 .vercel/
+# TODO: Review ignored files periodically to ensure they are still relevant
